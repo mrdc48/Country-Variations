@@ -1,9 +1,196 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Open URLs with Country Variations</title>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" />
+        <style>
+            body {
+                font-family: "Open Sans", sans-serif;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                min-height: 100vh;
+                background-color: #f4f4f4;
+            }
 
-<!DOCTYPE html><html><head><title>Open URLs with Country Variations</title><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap"/><style>body{font-family:"Open Sans",sans-serif}
-form{display:flex;flex-direction:column;gap:10px}
-#url{border:1px solid #ccc;border-radius:5px;width:250px;padding:15px}
-#url::placeholder{font-size:18px}
-input[type="button"]{background:linear-gradient(to right,#ff416c,#ff4b2b);color:white;border:none;font-size:18px;border-radius:5px;width:200px;padding:10px;cursor:pointer}
-input[type="button"]:hover{background-color:#0056b3}
-#popup-container{position:fixed;display:block;top:50%;left:50%;transform:translate(-50%,-50%);background-color:white;box-shadow:0px 5px 10px rgba(0,0,0,0.2);padding:30px;z-index:1000}.popup-content{text-align:center}.popup-button{background:linear-gradient(to right,#ff416c,#ff4b2b);color:white;border:none;font-size:18px;border-radius:5px;width:200px;padding:10px;cursor:pointer}.popup-button:hover{background-color:#0056b3}</style><script type="text/javascript">function open_country_urls(){const url=document.getElementById("url").value.trim();if(url===""){alert("Please enter a URL.");return}
-const countries={en:"us",en:"gb",es:"es",es:"la",de:"de",fr:"fr",id:"id",it:"it",ja:"jp",ko:"kr",nl:"nl",pl:"pl",pt:"br",tr:"tr",zh:"cn",zh:"tw"};for(const countryCode in countries){const languageCode=countries[countryCode];const combinedCode=`${countryCode}_${languageCode}`;let modifiedUrl=url.replace(/\/en\//g,`/${combinedCode}/`);window.open(modifiedUrl,"_blank")}}</script></head><body><div id="background-container"><div style="margin: 5rem;"><h1 style="text-align: center;">Open URL with Country Variations</h1><form style="display: grid; place-items: center; justify-content: center;"><label for="url">Enter URL:</label><input type="text" id="url" placeholder="Enter url"/><input type="button" value="Language masters" onclick="open_country_urls()"/></form><div id="popup-container"><div class="popup-content"><h2>Allow Popups</h2><p>To use this feature,please enable popups for this site.</p><button id="enablePopupButton" class="popup-button">Enable Popups</button></div></div></div></div><script>document.getElementById("enablePopupButton").addEventListener("click",function(){document.getElementById("popup-container").style.display="none";try{const popup=window.open("about:blank","popupTest","width=200,height=100");if(popup){localStorage.setItem("popupsAllowed","true");popup.close();alert("Popups enabled! You may need to reload the page.")}else{alert("Popups are still blocked. Please check your browser settings.")}}catch(err){alert("Popups are blocked. Please check your browser settings.")}});window.addEventListener("load",function(){if(localStorage.getItem("popupsAllowed")==="true"){document.getElementById("popup-container").style.display="none"}});</script><p style="display: none;">Mrdc48</p></body></html>
+            .container {
+                background-color: #fff;
+                padding: 30px;
+                border-radius: 8px;
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            }
+
+            h1 {
+                text-align: center;
+                margin-bottom: 20px;
+            }
+
+            p {
+                text-align: center;
+                margin-bottom: 20px;
+            }
+
+            form {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 1rem;
+            }
+
+            label {
+                margin-bottom: 5px;
+            }
+
+            input[type="text"] {
+                padding: 10px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+                margin-bottom: 10px;
+                width: 100%; /* Make input take full width of container */
+                box-sizing: border-box; /* Include padding and border in element's total width and height */
+            }
+
+            input[type="button"] {
+                background-color: #007bff;
+                color: white;
+                padding: 10px 20px;
+                border: none;
+                border-radius: 5px;
+                font-size: 1rem;
+                cursor: pointer;
+            }
+
+            input[type="button"]:hover {
+                background-color: #0056b3;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <h1>Open URL with Country Variations</h1>
+            <p>
+                Note: This feature may open multiple tabs. Please ensure your browser allows popups from this site.
+            </p>
+            <form>
+                <label for="url">Enter URL:</label>
+                <input type="text" id="url" placeholder="Enter URL" />
+
+                <input type="button" value="Open in Language masters" onclick="openCountryUrls()" />
+                <input type="button" value="Open in All Locales" onclick="openAllLocales()" />
+            </form>
+        </div>
+
+        <script>
+            window.addEventListener("load", () => {
+                checkPopupPermission();
+            });
+
+            function checkPopupPermission() {
+                if (localStorage.getItem("popupsAllowed") !== "true") {
+                    try {
+                        const testPopup = window.open("about:blank", "_blank");
+                        if (testPopup) {
+                            localStorage.setItem("popupsAllowed", "true");
+                            testPopup.close();
+                        } else {
+                            alert("Please allow popups from this site in your browser settings.");
+                        }
+                    } catch (error) {
+                        alert("Please allow popups from this site in your browser settings.");
+                    }
+                }
+            }
+
+            function openAllLocales() {
+                const urlInput = document.getElementById("url");
+                const baseUrl = urlInput.value.trim();
+
+                if (!baseUrl) {
+                    alert("Please enter a URL.");
+                    return;
+                }
+
+                // Check if the base URL includes "/us/en"
+                if (!baseUrl.includes("/us/en")) {
+                    alert("The URL must include '/us/en' to be replaced with other locales.");
+                    return;
+                }
+
+                const locales = [
+                    "us/en",
+                    "gb/en",
+                    "es/es",
+                    "es/la",
+                    "de/de",
+                    "fr/fr",
+                    "id/id",
+                    "it/it",
+                    "ja/jp",
+                    "ko/kr",
+                    "nl/nl",
+                    "pl/pl",
+                    "pt/br",
+                    "tr/tr",
+                    "zh/cn",
+                    "zh/tw",
+                    "as/en",
+                    "au/en",
+                    "in/en",
+                    "sg/en",
+                    "ca/en",
+                    "em/en",
+                    "be/nl",
+                    "be/fr",
+                    "pt/pt",
+                    "ca/fr",
+                ];
+                if (localStorage.getItem("popupsAllowed") === "true") {
+                    locales.forEach((locale) => {
+                        const modifiedUrl = baseUrl.replace("/us/en", `/${locale}`); 
+                        window.open(modifiedUrl, "_blank");
+                    });
+                } else {
+                    alert("Please allow popups from this site in your browser settings.");
+                }
+            }
+
+            function openCountryUrls() {
+                const urlInput = document.getElementById("url");
+                const baseUrl = urlInput.value.trim();
+
+                if (!baseUrl) {
+                    alert("Please enter a URL.");
+                    return;
+                }
+
+                const countryLanguagePairs = [
+                    { country: "en", language: "gb" },
+                    { country: "es", language: "es" },
+                    { country: "es", language: "la" },
+                    { country: "de", language: "de" },
+                    { country: "fr", language: "fr" },
+                    { country: "id", language: "id" },
+                    { country: "it", language: "it" },
+                    { country: "ja", language: "jp" },
+                    { country: "ko", language: "kr" },
+                    { country: "nl", language: "nl" },
+                    { country: "pl", language: "pl" },
+                    { country: "pt", language: "br" },
+                    { country: "tr", language: "tr" },
+                    { country: "zh", language: "cn" },
+                    { country: "zh", language: "tw" },
+                ];
+
+                if (localStorage.getItem("popupsAllowed") === "true") {
+                    countryLanguagePairs.forEach(({ country, language }) => {
+                        const combinedCode = `${country}_${language}`;
+                        const modifiedUrl = baseUrl.replace(/\/en\//g, `/${combinedCode}/`);
+                        window.open(modifiedUrl, "_blank");
+                    });
+                } else {
+                    alert("Please allow popups from this site in your browser settings.");
+                }
+            }
+        </script>
+    </body>
+</html>
